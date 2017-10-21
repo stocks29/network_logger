@@ -26,17 +26,17 @@ defmodule Logger.Backends.Network.TCPClient do
   end
 
   def handle_cast({:send_log, msg}, %{socket: socket, stash: stash} = state) do
-    msg_list =
-      (["", msg] ++ stash)
-      |> Enum.reverse
-      |> Enum.intersperse("\n")
-    case :gen_tcp.send(socket, msg_list) do
-      :ok ->
-        {:noreply, state}
-      {:error, _reason} ->
-        # TODO: Error handling
-        {:noreply, state}
+    msg_list = Enum.reverse([msg|stash])
+
+    for item <- msg_list do
+      case :gen_tcp.send(socket, item) do
+        :ok -> :ok
+        {:error, _reason} -> :error
+          # TODO: Error handling
+      end
     end
+
+    {:noreply, state}
   end
 
   def handle_cast(:reconnect, %{host: host, port: port} = state) do
