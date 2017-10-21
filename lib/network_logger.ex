@@ -1,6 +1,5 @@
 defmodule Logger.Backends.Network do
   alias Logger.Backends.Network.TCPClient
-  use GenEvent
 
   @default_format "$time $metadata[$level] $message\n"
 
