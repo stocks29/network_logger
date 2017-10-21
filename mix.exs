@@ -16,7 +16,7 @@ defmodule Logger.Backends.JSON.Mixfile do
   ]
 
   defp deps do
-    []
+    [{:ex_doc, ">= 0.0.0", only: :dev}]
   end
 
   def package do
